@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>windows server 2012</title>
+</head>
+
+<body>
+    <h1>Serveur</h1>
+    <h3>1- Configuration AD DS</h3>
+    <ol type="1">
+        <li>
+            Installer AD DS.
+            <p>
+                Ajouter des role > role : Cocher service AD DS > Installer.
+            </p>
+        </li>
+        <li>
+            Promovoir ce serveur.(panneau des taches)
+            <p>
+                Ajouter nouvelle foret <br>
+                -nom: nouaamana.intra
+                -mdp : ...... <br>
+                . <br>
+                . <br>
+                . <br>
+                > installer (redemarrer machine).
+            </p>
+        </li>
+    </ol>
+    <!--  -->
+    <h3>2- Utilisateurs et ordinateurs Active Directory</h3>
+    <ol type="1">
+        <li>
+            Ajouter utilisateurs
+            <p>
+                outils > Utilisateurs et ordinateurs Active Directory > (click droit) nouveau utilisateur
+                (nom,prenom,mdp...) > Ajouter.
+
+            </p>
+        </li>
+        <li>
+            Renommer carte reseau
+            <p>
+                panneau de configuration > reseau et internet > connexion reseaux ("intranet")
+            </p>
+            <p>
+                <strong>IPv4:</strong> <br>
+                - adress : 192.168.25.1 <br>
+                - masque : 255.255.0.0 <br>
+                - passerelle : 192.168.25.1 <br>
+            </p>
+            <p>
+                <strong>passer en reseau interne (client et serveur) (intranet)</strong>
+            </p>
+        </li>
+    </ol>
+
+
+    <h1>Client</h1>
+    <ol>
+        <li>
+            - ipv4 : 192.168.25.10 <br>
+            - masque : 255.255.0.0 <br>
+            - passerelle : 192.168.25.1 (ip machine serveur) <br>
+        </li>
+        <li>
+            Systeme > modifier parametre <br>
+            > modifier <br>
+            - domaine : nouaaman.intra <br>
+            - user and passeword (reboot)
+        </li>
+    </ol>
+
+    <h1>Serveur</h1>
+    <ol>
+        <li>
+            - ipv4 : 192.168.25.10 <br>
+            - masque : 255.255.0.0 <br>
+            - passerelle : 192.168.25.1 (ip machine serveur) <br>
+        </li>
+        <li>
+            Systeme > modifier parametre <br>
+            > modifier <br>
+            - domaine : nouaaman.intra <br>
+            - user and passeword (reboot)
+        </li>
+    </ol>
+
+    <h3>3- DHCP</h3>
+        <ol>
+            <li>Ajouter des roles > DHCP</li>
+            <li>Terminer la configuration DHCP </li>
+            <li>outils > DHCP :
+                <p>
+                    -> IPv4 (click droit) > nouvelle etendue <br>
+                    -> Adresse debut : 192..168.25.10 - Adresse fin : 192.168.25.19 (10 machines) <br>
+                    -> Terminer (reboot) <br>
+                </p>
+            </li>
+            <li>
+                Ajouter interface reseau (pour acces internet):
+                <p>
+                    -> type d'acces : NAT <br>
+                    (1 interface reseau interne "intraner")
+                </p>
+            </li>
+            <li>
+                Internet:
+                <p>
+                    1 - Activer accées a distance > routage > installer. <br>
+                    2 - outils > outage et accées distant > (click droit) > configuer le routage
+                    d'accées distant > NAT.
+                    3 - Sur machine Client : <br>
+                     -> IPv4 : autre <br>
+                     -> DNS : (ip Serveur) <br>
+                     -> avancé > passerelle > ajouter (Ip Serveur) <br>
+                </p>
+            </li>
+        </ol>
+
+
+        <hr>
+        <h1>Restrivtions</h1>
+        <h2>Interdire le changement de fond d'ecran</h2>
+        <ol>
+            <li>
+                Outils:
+                <p>
+                    Gestion des strategies de groupe
+                </p>
+            </li>
+            <li>
+                GPO (Groupe policy organisation)
+                <p>
+                    Foret > domaines > ("domaine name") > Default domain policy (right click) > modifier
+                </p>
+            </li>
+            <li>
+                Editeur de Gestion de strategies de groupe:
+                <p>
+                    - configuration utilisateur > strategies <br>
+                    - modeles d'administration <br>
+                    - panneau de configuration <br>
+                    - personalisation <br>
+                    - Empecher de modifiers l'arriere plan du bureau (active)
+                </p>
+            </li>
+            <li>
+                CMD :
+                <p>
+                    - gpupdate /force <br>
+                    - 
+                </p>
+            </li>
+            <li>
+                redemarrer machine client ou CMD:
+                <p>
+                   - gpupdate /force
+                </p>
+            </li>
+        </ol>
+
+        <h2>Interdire USB</h2>
+        <ol>
+            <li>|</li>
+            <li>|</li>
+            <li>
+                Editeur de Gestion de strategies de groupe:
+                <p>
+                    - configuration ordinateur > strategies <br>
+                    - modeles d'administration <br>
+                    - systeme > accées au stockage amovible<br>
+                    - Toute les classes des stockages <br>
+                    - refuser tous les accés (active)
+                </p>
+            </li>
+        </ol>
+
+        <hr>
+        <h1>Wordpress</h1>
+        <ol>
+            <li>telecharger wordpress </li>
+            <li>Dezipper WP dans : "C:\inetpub\wwwroot\wp..."</li>
+            <li>dans IIS installer php 7.2 ou 7.3</li>
+            <li>faire une essaie php : -> <?PHP ECHO 'HELLO' ?> dans index.php sous inetpub\wwwroot </li>
+            <li>navigation: http:\\192.168.x.x/index.php</li>
+            <li>navigation ->  http:\\192.168.x.x/wordpress/wp-admin/install.php</li>
+        </ol>
+</body>
+
+</html>
